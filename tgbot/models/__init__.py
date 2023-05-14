@@ -6,3 +6,4 @@ create_tables()
 
 # Create an instance of the Database class
 db = Database()
+

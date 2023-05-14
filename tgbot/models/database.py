@@ -1,7 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
-from tgbot.models.model import Base
+from tgbot.models.model import Base, User, Transaction
 # 
 # from .model import Base
 
@@ -21,6 +21,10 @@ class Database:
 
     def commit(self):
         self.session.commit()
+    
+
+    def get_user(self, user_id):
+        return self.session.query(User).filter_by(user_id=user_id).first()
 
 
 
