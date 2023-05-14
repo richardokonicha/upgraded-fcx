@@ -42,12 +42,14 @@ class User(Base):
     pending_investment = Column(DECIMAL(8, 6))
     active_reinvestment = Column(DECIMAL(8, 6))
     transactions = relationship("Transaction", uselist=True, backref="user")
+    is_admin = Column(Boolean, default=False)
 
-    def __init__(self, user_id, name, is_admin=False, is_new_user=True):
+    def __init__(self, user_id, name, referral=None, is_new_user=True, is_admin=False):
         self.user_id = user_id
         self.name = name
-        self.is_admin = is_admin
+        self.referral = referral
         self.is_new_user = is_new_user
+        self.is_admin = is_admin
         self.registered_date = datetime.now().isoformat()
         self.account_balance = Decimal()
         self.active_investment = Decimal()
@@ -57,34 +59,9 @@ class User(Base):
     def exists(self):
         return session.query(exists().where(User.user_id == self.user_id)).scalar()
 
-    @classmethod
-    def exists_id(cls, user_id):
-        return session.query(exists().where(cls.user_id == user_id)).scalar()
-
-    # @classmethod
-    # def get_user(cls, user_id):
-    #     if cls.db.session.query(cls.exists().where(cls.user_id == user_id)).scalar():
-    #         return cls.db.session.query(cls).filter_by(user_id=user_id).first()
-    #     else:
-    #         return None
-
-
-    # @classmethod
-    # def get_user(cls, user_id):
-    #     if session.query(exists().where(cls.user_id == user_id)).scalar():
-    #         return session.query(cls).filter_by(user_id=user_id).first()
-    #     else:
-    #         return None
-
-    # @classmethod
-    # def get_user_by_id(cls, user_id):
-    #     return db.session.query(cls).filter_by(user_id=user_id).first()
-
     def set_last_visited(self):
         self.last_visited = datetime.now().isoformat()
         return self.last_visited
-
-    
 
     def __repr__(self):
         return f"User {self.name}"
@@ -152,3 +129,26 @@ class Transaction(Base):
 
     def __repr__(self):
         return f"Transaction {self.user_id} {self.transaction_type} {self.amount}"
+
+
+
+
+ 
+    # @classmethod
+    # def get_user(cls, user_id):
+    #     if cls.db.session.query(cls.exists().where(cls.user_id == user_id)).scalar():
+    #         return cls.db.session.query(cls).filter_by(user_id=user_id).first()
+    #     else:
+    #         return None
+
+
+    # @classmethod
+    # def get_user(cls, user_id):
+    #     if session.query(exists().where(cls.user_id == user_id)).scalar():
+    #         return session.query(cls).filter_by(user_id=user_id).first()
+    #     else:
+    #         return None
+
+    # @classmethod
+    # def get_user_by_id(cls, user_id):
+    #     return db.session.query(cls).filter_by(user_id=user_id).first()
