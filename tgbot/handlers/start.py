@@ -5,25 +5,15 @@ from tgbot.utils.messages import messages
 from tgbot.utils.buttons import lang_keys, dashboard
 
 
-
 def start(message: Message, bot: TeleBot):
     """this is the starting point, it checks if user is not registered 
     and renders lang settings if user is registered uses pervious lang """
     chat_id = message.chat.id
     user_id = message.from_user.id
-
     name = message.from_user.first_name
-
-    # user_instance = User(user_id=user_id, name=name)
-    # user_instance = User(user_id=user_id, name=name, db=db)
-    # with db.session.begin():
-    #     db.session.add(user_instance)
-
     fcx_user = db.get_user(user_id)
-
     select_preferred_lang = messages["select_preferred_lang"]
     welcome_text = messages["welcome_text"]
-
     
     if fcx_user is not None:
         lang = fcx_user.language
@@ -48,7 +38,7 @@ def start(message: Message, bot: TeleBot):
             )
             if fcx_user.referral:
                 referral_id = fcx_user.referral
-                fcx_referral = db.User.get_user(referral_id)
+                fcx_referral = db.get_user(referral_id)
                 referral_name = fcx_referral.name
                 referred = {
                     "en": f"You were referred by {referral_name}",
