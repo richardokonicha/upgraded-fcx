@@ -2,7 +2,7 @@ from telebot import TeleBot
 from telebot.types import Message
 from tgbot.models import db, User
 from tgbot.utils.messages import messages
-from tgbot.utils.buttons import lang_keys
+from tgbot.utils.buttons import lang_keys, dashboard
 
 
 
@@ -65,22 +65,23 @@ def start(message: Message, bot: TeleBot):
     else:
         try:
             referral = message.text.split(' ')[1]
-            if not db.User.exists_id(int(referral)):
+            if not db.user_exists(int(referral)):
                 referral = "Invalid referral"
         except (IndexError, ValueError) as error:
             referral = None
             print(error)
 
-        fcx_user = db.User(
+        fcx_user = db.create_user(
             name=name,
-            user_id=user_id
+            user_id=user_id,
+            referral=referral,
+            is_new_user=True,
+            is_admin=False
         )
-        fcx_user.is_new_user = True
-        fcx_user.referral = referral
-        fcx_user.commit()
+
         bot.send_message(
             chat_id,
-            text=select_prefered_lang,
+            text=select_preferred_lang,
             reply_markup=lang_keys,
             parse_mode="HTML"
         )
