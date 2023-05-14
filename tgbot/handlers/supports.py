@@ -1,30 +1,17 @@
-from config import *
+from telebot import TeleBot
+from telebot.types import Message
+from tgbot.models import db
+from tgbot.utils.buttons import dashboard
+from tgbot.utils.messages import messages
 
-@bot.message_handler(
-    func=lambda message: message.content_type == 'text'
-    and ( 
-        bool(re.search(r'Support$', message.text, re.IGNORECASE))
-         or  bool(re.search(r'Supporto$', message.text, re.IGNORECASE))
-        )
-)
-def support(message):
+
+def support(message: Message, bot: TeleBot):
     user_id = message.from_user.id
-    fcx_user = db.User.get_user(user_id)
+    fcx_user = db.get_user(user_id)
     lang = fcx_user.language
-    text_info = {
-        "ENGLISH": f"""
-Contact:
-@fcx_bot
-        """,
-        "ITALIAN": f"""
-Contatto:
-@fcx_bot
-
-        """
-        }
-
+    support_info = messages["support_info"]
     bot.send_message(
-        user_id, text=text_info[lang],
+        user_id, text=support_info[lang],
         reply_markup=dashboard.get(lang), parse_mode="html"
         )
 
