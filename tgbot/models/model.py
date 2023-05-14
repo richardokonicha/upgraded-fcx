@@ -61,16 +61,30 @@ class User(Base):
     def exists_id(cls, user_id):
         return session.query(exists().where(cls.user_id == user_id)).scalar()
 
-    @classmethod
-    def get_user(cls, user_id):
-        if session.query(exists().where(cls.user_id == user_id)).scalar():
-            return session.query(cls).filter_by(user_id=user_id).first()
-        else:
-            return None
+    # @classmethod
+    # def get_user(cls, user_id):
+    #     if cls.db.session.query(cls.exists().where(cls.user_id == user_id)).scalar():
+    #         return cls.db.session.query(cls).filter_by(user_id=user_id).first()
+    #     else:
+    #         return None
+
+
+    # @classmethod
+    # def get_user(cls, user_id):
+    #     if session.query(exists().where(cls.user_id == user_id)).scalar():
+    #         return session.query(cls).filter_by(user_id=user_id).first()
+    #     else:
+    #         return None
+
+    # @classmethod
+    # def get_user_by_id(cls, user_id):
+    #     return db.session.query(cls).filter_by(user_id=user_id).first()
 
     def set_last_visited(self):
         self.last_visited = datetime.now().isoformat()
         return self.last_visited
+
+    
 
     def __repr__(self):
         return f"User {self.name}"
