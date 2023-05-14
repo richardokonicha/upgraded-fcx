@@ -2,8 +2,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from tgbot.models.model import Base, User, Transaction
-# 
-# from .model import Base
 
 DB_FILE_PATH = 'tgbot/models/database.db'
 SQLITE_URL = f'sqlite:///{DB_FILE_PATH}'
@@ -18,7 +16,6 @@ def create_tables():
 class Database:
     def __init__(self):
         self.session = session
-
 
     def commit(self):
         self.session.commit()
