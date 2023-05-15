@@ -1,10 +1,11 @@
 # Telegram Bot Configuration
-TOKEN = '********:AAE1EP8JSAaFznJAUeDe4Yo4Eje3SgokCRk'
+TOKEN = '5529901971:AAE1EP8JSAaFznJAUeDe4Yo4Eje3SgokCRk'
 DEBUG = True
 
 # Webhook Configuration
 WEBHOOKMODE = True
-WEBHOOK_URL = 'https://5002-richardokon-upgradedfcx-******.ws-eu97.gitpod.io'
+WEBHOOK_URL = 'https://richardokon-upgradedfcx-82z3zmfnasf.ws-eu97.gitpod.io'
+
 # Database Configuration
 POSTGRES_URL = "postgres://default:***@ep-calm-brook-757839.us-east-1.postgres.vercel-storage.com:5432/verceldb"
 SQLITE_URL = 'sqlite:///database/database.db'

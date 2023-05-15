@@ -32,7 +32,7 @@ I depositi sono gestiti al più alto livello di sicurezza secondo una moderna ge
 
     "balance_msg": {
 
-                "en": """
+        "en": """
 Your Account Balance:
 <strong>{balance} BTC</strong>
 Total Active Investments:
@@ -43,7 +43,7 @@ Total Pending Investments:
 <strong>{pending_investment} BTC</strong>
                 """,
 
-                "it": """
+        "it": """
 
 Saldo del conto:
 <strong>{balance} BTC</strong>
@@ -55,9 +55,7 @@ Investimenti in sospeso:
 <strong>{pending_investment} BTC</strong>
 
     """,
-                },
-
-    
+    },
 
     "no_balance_text": {
         "en": f"""
@@ -67,14 +65,14 @@ Investimenti in sospeso:
             Ancora nessun investimento
 Andate a <b>Deposito</b> per aggiungere fondi.
         """
-        },
+    },
 
     "fcx_markup_balances": {
-            "en": "Balance  {account_balance} BTC",
-            "it": "Bilance  {account_balance} BTC"
-            },
+        "en": "Balance  {account_balance} BTC",
+        "it": "Bilance  {account_balance} BTC"
+    },
 
-"support_info": {
+    "support_info": {
         "en": f"""
 Contact:
 @fcx_bot
@@ -84,19 +82,18 @@ Contatto:
 @fcx_bot
 
         """
-        },
+    },
 
-
-# deposits
-"deposit_amount_text": {
+    # deposits
+    "deposit_amount_text": {
         "en": """<b>Enter the amount you wish to deposit 
 (min: 0.025 BTC max: 5 BTC)</b>""",
         "it": """Enter the amount you wish to deposit(italian
 (min: 0.025 BTC max: 5 BTC)"""
     },
 
-"duration_text": {
-            "en": """
+    "duration_text": {
+        "en": """
 Bitcoin Amount:
 Min: 0.025 BTC
 Max: 5 BTC
@@ -113,12 +110,62 @@ Questo indirizzo sarà attivo per 4 ore.
 I fondi appariranno dopo la prima conferma della Blockchain.
         
             """
-        },
+    },
 
- "arrival_text": {
-            "en": """Here is your personal BTC address for your Investments ⬇️⬇️⬇️""",
-            "it": """Qui il Vostro indirizzo personale Bitcoin per i Vostri investimenti:"""
-        }
-        
+    "arrival_text": {
+        "en": """Here is your personal BTC address for your Investments ⬇️⬇️⬇️""",
+        "it": """Qui il Vostro indirizzo personale Bitcoin per i Vostri investimenti:"""
+    },
+
+    # Reinvest
+    "reinvest_info": {
+        "en": f"""
+You can make a reinvest any time, depending on your account balance . 
+Minimum amount to reinvest is 0.002 BTC. Once credited, each reinvestment counts for itself and runs for 180 days.
+        """,
+        "it": f"""
+Potete effettuare un reinvestimento in qualsiasi momento, a seconda del saldo del Vostro conto. L'importo minimo da reinvestire è di 0,002 BTC. Una volta accreditato, ogni reinvestimento vale per se stesso e dura 180 giorni.
+        """
+    },
+    "reinvest_insufficient": {
+        "en": """
+You don't have enough funds to create a reinvest
+        """,
+        "it": """
+Non avete abbastanza fondi per creare un reinvestimento. 
+        """
+    },
+
+    "reinvest_enter_amount": {
+        "en": """
+<b>Please enter the amount to reinvest:</b>
+        """,
+        "it": """
+<b>Per favore inserire l'importo da reinvestire:</b>
+        """
+    },
+
+    "text_insufficient": {
+        "en": "You have insufficient account balance",
+        "it": "Hai un saldo del conto insufficiente"
+    },
+
+    "invalid_amount": {
+        "en": "Invalid reinvestment amount",
+        "it": "Importo del reinvestimento non valido"
+    },
+
+    "investment_confirmation": {
+        "en": """
+You're about to make a reinvestment of:{reinvestment_amount} BTC""",
+        "it": """
+Stai per effettuare un reinvestimento di:{reinvestment_amount} BTC"""
+    },
+
+    "invalid_amount": {
+        "en": "Invalid reinvestment amount",
+        "it": "Invalid reinvestment amount (italian)"
+    },
+
+
 }
-

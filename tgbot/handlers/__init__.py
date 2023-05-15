@@ -8,6 +8,7 @@ from .language import show_language, set_language
 from .balances import balance
 from .supports import support
 from .deposits import deposit, promo
+from .reinvest import reinvest
 
 
 def register_handlers(bot):
@@ -36,9 +37,10 @@ def register_handlers(bot):
         balance,
         func=lambda message: message.content_type == "text"
         and (
-            bool(re.search(r'^balance', message.text.split()[0], re.IGNORECASE)) or 
-            bool(re.search(r'^bilance', message.text.split()[0], re.IGNORECASE))
-            ),
+            bool(re.search(r'^balance', message.text.split()[0], re.IGNORECASE)) or
+            bool(re.search(r'^bilance',
+                 message.text.split()[0], re.IGNORECASE))
+        ),
         admin=False, pass_bot=True
     )
 
@@ -46,9 +48,9 @@ def register_handlers(bot):
         support,
         func=lambda message: message.content_type == "text"
         and (
-            bool(re.search(r'Support$', message.text, re.IGNORECASE)) or 
+            bool(re.search(r'Support$', message.text, re.IGNORECASE)) or
             bool(re.search(r'Supporto$', message.text, re.IGNORECASE))
-            ),
+        ),
         admin=False, pass_bot=True
     )
 
@@ -56,9 +58,9 @@ def register_handlers(bot):
         deposit,
         func=lambda message: message.content_type == "text"
         and (
-               bool(re.search(r'deposit$', message.text, re.IGNORECASE)) or 
-               bool(re.search(r'Depositare$', message.text, re.IGNORECASE))
-            ),
+            bool(re.search(r'deposit$', message.text, re.IGNORECASE)) or
+            bool(re.search(r'Depositare$', message.text, re.IGNORECASE))
+        ),
         admin=False, pass_bot=True
     )
 
@@ -66,8 +68,16 @@ def register_handlers(bot):
         promo,
         func=lambda message: message.content_type == "text"
         and (
-               bool(re.search(r'^PROMO', message.text, re.IGNORECASE))
-            ),
+            bool(re.search(r'^PROMO', message.text, re.IGNORECASE))
+        ),
         admin=False, pass_bot=True
     )
-    
+
+    bot.register_message_handler(
+        reinvest,
+        func=lambda message: message.content_type == "text"
+        and (
+            bool(re.search(r'Reinvest$', message.text, re.IGNORECASE))
+        ),
+        admin=False, pass_bot=True
+    )
