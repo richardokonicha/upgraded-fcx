@@ -1,12 +1,12 @@
+from decimal import Decimal
 from telebot import TeleBot
 from telebot.types import Message
-from decimal import Decimal
 from tgbot.models import db
-from tgbot.utils.messages import messages
-from tgbot.utils.buttons import force_r, dashboard
-from .start import start
-from .language import show_language
 from tgbot.payments import payment_client
+from tgbot.utils.buttons import force_r, dashboard
+from tgbot.utils.messages import messages
+from .language import show_language
+from .start import start
 
 
 def generate_address(message, **kwargs):
@@ -23,7 +23,8 @@ def generate_address(message, **kwargs):
     
     try:
         amount = Decimal(message.text)
-        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+        dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang].format(account_balance=fcx_user.account_balance)
+        # dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
         arrival_text = messages["arrival_text"][lang]
         duration_text = messages["duration_text"][lang]
 
@@ -89,7 +90,6 @@ def deposit(message: Message, bot: TeleBot):
     bot.register_for_reply_by_message_id(
         nxt,
         generate_address,
-        # message=message, 
         bot=bot
     )
 
@@ -98,23 +98,28 @@ def deposit(message: Message, bot: TeleBot):
 def promo(message: Message, bot: TeleBot):
     user_id = message.from_user.id
     chat_id = message.chat.id
-    fcx_user = db.User.get_user(user_id)
+    fcx_user = db.get_user(user_id)
     balance = fcx_user.account_balance
     lang = fcx_user.language
-    dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+    # dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+    dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang].format(account_balance=fcx_user.account_balance)
     promo = message.text.split(" ")[-1]
     try:
         promo = Decimal(promo)
-        fcx_user.account_balance = fcx_user.account_balance + promo # REMOVE THIS
-        fcx_transact = db.Transactions(
-            fcx_user.user_id,
+        fcx_user.account_balance += promo
+        
+        fcx_transact = db.create_transact(
+            user_id=fcx_user.user_id,
             transaction_type="deposit",
             amount=promo,
             status="Completed",
             balance=fcx_user.account_balance
-            )
-        fcx_transact.commit()
-        dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+        )
+        
+        db.commit()
+        
+        # dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+        dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang].format(account_balance=fcx_user.account_balance)
         bot.send_message(
             chat_id,
             text=f"You've been gifted {promo} virtual btc to test other features",

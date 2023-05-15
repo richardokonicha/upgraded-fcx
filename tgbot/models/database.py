@@ -32,5 +32,11 @@ class Database:
         self.commit()
         return new_user
 
+    def create_transact(self, user_id, transaction_type, amount, status, balance):
+        new_transaction = Transaction(user_id=user_id, transaction_type=transaction_type, amount=amount, status=status, balance=balance)
+        self.session.add(new_transaction)
+        self.commit()
+        return new_transaction
+
 
 
