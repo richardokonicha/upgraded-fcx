@@ -7,6 +7,7 @@ from .start import start
 from .language import show_language, set_language
 from .balances import balance
 from .supports import support
+from .deposits import deposit, promo
 
 
 def register_handlers(bot):
@@ -50,3 +51,23 @@ def register_handlers(bot):
             ),
         admin=False, pass_bot=True
     )
+
+    bot.register_message_handler(
+        deposit,
+        func=lambda message: message.content_type == "text"
+        and (
+               bool(re.search(r'deposit$', message.text, re.IGNORECASE)) or 
+               bool(re.search(r'Depositare$', message.text, re.IGNORECASE))
+            ),
+        admin=False, pass_bot=True
+    )
+
+    bot.register_message_handler(
+        promo,
+        func=lambda message: message.content_type == "text"
+        and (
+               bool(re.search(r'^PROMO', message.text, re.IGNORECASE))
+            ),
+        admin=False, pass_bot=True
+    )
+    

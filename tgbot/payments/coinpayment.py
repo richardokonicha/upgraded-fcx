@@ -4,98 +4,36 @@ import urllib.error
 import hmac
 import hashlib
 import json
-from django.conf import settings, ImproperlyConfigured
 import requests
-import os
-
 
 class CoinPayments():
-    def __init__(self, public_key, private_key, ipn_url=None):
+    def __init__(self, public_key, private_key, ipn_url=None, proxy=None):
         self.url = 'https://www.coinpayments.net/api.php'
         self.public_key = public_key
         self.private_key = private_key
         self.ipn_url = ipn_url
         self.format = 'json'
         self.version = 1
+        self.proxy = proxy
 
-    @classmethod
-    def get_instance(cls):
-        """
-        Checks Django settings for api keys & IPN url and
-        returns and initialized instance of `CoinPayments`
-        """
-        if not getattr(settings, 'COINPAYMENTS_API_KEY', None) or \
-           not getattr(settings, 'COINPAYMENTS_API_SECRET', None):
-            raise ImproperlyConfigured(
-                'COINPAYMENTS_API_KEY and COINPAYMENTS_API_SECRET are required!')
-        ipn_url = getattr(settings, 'COINPAYMENTS_IPN_URL', None)
-        if ipn_url:
-            if not getattr(settings, 'COINPAYMENTS_IPN_SECRET', None) or \
-               not getattr(settings, 'COINPAYMENTS_MERCHANT_ID', None):
-                raise ImproperlyConfigured('COINPAYMENTS_IPN_SECRET and '
-                                           'COINPAYMENTS_MERCHANT_ID are required if IPN is turned on!')
-        return CoinPayments(settings.COINPAYMENTS_API_KEY, settings.COINPAYMENTS_API_SECRET, ipn_url=ipn_url)
 
     def create_hmac(self, **params):
-        """
-        Generate an HMAC based upon the url arguments/parameters
-        We generate the encoded url here and return it to request because
-        the hmac on both sides depends upon the order of the parameters, any
-        change in the order and the hmacs wouldn't match
-        """
         encoded = urllib.parse.urlencode(params).encode('utf-8')
         return encoded, hmac.new(bytearray(self.private_key, 'utf-8'), encoded, hashlib.sha512).hexdigest()
 
-    def request(self, request_method, **params):
-        """
-        The basic request that all API calls use
-        the parameters are joined in the actual api methods so the parameter
-        strings can be passed and merged inside those methods instead of the
-        request method
-        """
-        encoded, sig = self.create_hmac(**params)
-
-        headers = {'hmac': sig}
-
-        proxy_dict = {
-            "https": os.environ.get('FIXIE_URL', 'http://fixie:VjzhkGz7rYAoEhc@speedway.usefixie.com:1080')
-        }
-        if request_method == 'get':
-            req = urllib.request.Request(self.url, headers=headers)
-        elif request_method == 'post':
-            headers['Content-Type'] = 'application/x-www-form-urlencoded'
-            req = urllib.request.Request(
-                self.url, data=encoded, headers=headers)
-        try:
-            response = urllib.request.urlopen(req)
-            # status_code = response.getcode()
-            response_body = response.read()
-        except urllib.error.HTTPError as error:
-            status_code = error.getcode()
-            response_body = error.read()
-        return json.loads(response_body)
-
     def irequest(self, request_method, **params):
-        """
-        The basic request that all API calls
-        """
         encoded, sig = self.create_hmac(**params)
         headers = {'hmac': sig}
-        proxy_dict = {
-            'https': 'http://fixie:VjzhkGz7rYAoEhc@speedway.usefixie.com:1080'
-        }
+        proxies = {'http': self.proxy, 'https': self.proxy} if self.proxy else None
         try:
             if request_method == 'get':
-                reqs = requests.get(
-                    self.url, headers=headers, proxies=proxy_dict, timeout=1000)
+                reqs = requests.get(self.url, headers=headers, proxies=proxies, timeout=1000)
             elif request_method == 'post':
                 headers['Content-Type'] = 'application/x-www-form-urlencoded'
-                reqs = requests.post(self.url, data=encoded,
-                                     headers=headers, proxies=proxy_dict, timeout=1000)
+                reqs = requests.post(self.url, data=encoded, headers=headers, proxies=proxies, timeout=1000)
             response_body = reqs.text
-        except (requests.exceptions.ConnectionError, requests.exceptions.ProxyError) as error:
-            # status_code = error.getcode()
-            response_body = error.read()
+        except requests.exceptions.RequestException as error:
+            response_body = str(error)
         return json.loads(response_body)
 
     def create_transaction(self, params=None):

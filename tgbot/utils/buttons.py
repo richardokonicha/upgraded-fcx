@@ -26,6 +26,9 @@ fcx_markup = {
         ["⛳ Squadra", "🇬🇧 linguaggio", "🤝 Supporto"]
     ]
 }
+
+
+
 dashboard = {
     "en": en_home_keys,
     "it": it_home_keys
