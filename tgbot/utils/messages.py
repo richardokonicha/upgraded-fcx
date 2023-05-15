@@ -74,7 +74,7 @@ Andate a <b>Deposito</b> per aggiungere fondi.
             "it": "Bilance  {account_balance} BTC"
             },
 
-    "support_info": {
+"support_info": {
         "en": f"""
 Contact:
 @fcx_bot
@@ -87,8 +87,38 @@ Contatto:
         },
 
 
+# deposits
+"deposit_amount_text": {
+        "en": """<b>Enter the amount you wish to deposit 
+(min: 0.025 BTC max: 5 BTC)</b>""",
+        "it": """Enter the amount you wish to deposit(italian
+(min: 0.025 BTC max: 5 BTC)"""
+    },
 
+"duration_text": {
+            "en": """
+Bitcoin Amount:
+Min: 0.025 BTC
+Max: 5 BTC
 
+This address will be active for 4 hours.
+Funds will show up after first blockchain confirmation.
+""",
+        "it": """
+Importo Bitcoin: 
+Min. 0,025 BTC 
+Max. 5 BTC
 
+Questo indirizzo sarà attivo per 4 ore.
+I fondi appariranno dopo la prima conferma della Blockchain.
+        
+            """
+        },
+
+ "arrival_text": {
+            "en": """Here is your personal BTC address for your Investments ⬇️⬇️⬇️""",
+            "it": """Qui il Vostro indirizzo personale Bitcoin per i Vostri investimenti:"""
+        }
+        
 }
 
