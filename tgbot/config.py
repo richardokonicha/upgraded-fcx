@@ -4,7 +4,7 @@ DEBUG = True
 
 # Webhook Configuration
 WEBHOOKMODE = True
-WEBHOOK_URL = 'https://richardokon-upgradedfcx-82z3zmfnasf.ws-eu97.gitpod.io'
+WEBHOOK_URL = 'https://5003-richardokon-upgradedfcx-82z3zmfnasf.ws-eu97.gitpod.io'
 
 # Database Configuration
 POSTGRES_URL = "postgres://default:***@ep-calm-brook-757839.us-east-1.postgres.vercel-storage.com:5432/verceldb"
@@ -16,7 +16,7 @@ MERCHANT_PKEY = "c68f21F77B13FE4D6617EfcD0287c036da7A3aB1A5f3e870fb179E94*******
 MERCHANT_PBKEY = "953b0c668c9d75c2d3da984f62a00fd269dc66c6da701250a0d7e14********"
 
 # IPN Configuration
-IPN_URL = "https://5000-richardokon-literateoct-*******.ws-eu97.gitpod.io"
+IPN_URL = "https://5003-richardokon-upgradedfcx-82z3zmfnasf.ws-eu97.gitpod.io"
 PROXY = 'http://proxy_ip:proxy_port'
 
 # Admin Configuration

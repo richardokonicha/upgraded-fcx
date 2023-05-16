@@ -6,19 +6,8 @@ from tgbot import config
 from tgbot.utils.messages import messages
 from decimal import Decimal
 
-# @bot.callback_query_handler(func=lambda call: True)
-# def callback_answer(call):
-#         user_id = call.from_user.id
-#         fcx_user = db.User.get_user(user_id)
-#         balance = fcx_user.account_balance
-#         lang = fcx_user.language
-#         if call.data == "confirm_reinvestment":
-#                 pass
-
-
 def process_reinvest(message):
     pass
-
 
 def verify_reinvest(message, **kwargs):
     bot = kwargs.get("bot")
@@ -27,7 +16,6 @@ def verify_reinvest(message, **kwargs):
     user_id = message.from_user.id
     fcx_user = db.get_user(user_id)
     chat_id = message.chat.id
-    # fcx_user = db.User.get_user(user_id)
     reply_from = message.reply_to_message.text
     if reply_from in ["Please enter the amount to reinvest:", "Per favore inserire l'importo da reinvestire:"]:
         balance = fcx_user.account_balance
@@ -36,7 +24,6 @@ def verify_reinvest(message, **kwargs):
             reinvestment_amount = Decimal(message.text)
             if reinvestment_amount > balance:
                 text_insufficient = messages["text_insufficient"][lang]
-
                 bot.reply_to(
                     message,
                     text=text_insufficient,
@@ -65,7 +52,6 @@ def verify_reinvest(message, **kwargs):
                 reply_markup=dashboard[lang]
             )
 
-
 def reinvest(message: Message, bot: TeleBot):
     user_id = message.from_user.id
     chat_id = message.chat.id
@@ -93,7 +79,6 @@ def reinvest(message: Message, bot: TeleBot):
         bot.send_message(
             chat_id,
             text=reinvest_enter_amount,
-            # reply_markup=dashboard.get(lang),
             parse_mode="html",
             reply_markup=force_r
         )

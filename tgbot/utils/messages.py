@@ -167,5 +167,147 @@ Stai per effettuare un reinvestimento di:{reinvestment_amount} BTC"""
         "it": "Invalid reinvestment amount (italian)"
     },
 
+    # callback
+
+    "wallet_address_confirmation": {
+        "en": """
+Your bitcoin wallet address has been set to : 
+<strong>{wallet_address}</strong>
+
+You can now make a <b>withdrawal</b>
+                """,
+        "it": """
+Il tuo indirizzo di portafoglio bitcoin è stato impostato su : 
+<strong>{wallet_address}</strong>
+
+Ora puoi effettuare un <b>prelievo</b>
+                """
+    },
+
+    "payout_processing_text": {
+        "en": f"""Your payout request will be processed within the next 48 hours""",
+        "it": f"""La Vostra richiesta di pagamento sarà eseguita entro le prossime 48 ore"""
+    },
+
+
+    "reinvest_confirmation_text": {
+        "en": """
+    <b>Done. 
+Your reinvest starts on {start_date}
+for 180 days up until {close_date}</b>
+                """,
+        "it": """
+    <b>Fatto. 
+Il Vostro reinvestimento inizia il {start_date}
+per 180 giorni fino al {close_date}</b>
+                """
+    },
+
+    # transaction
+
+
+    "transaction_text_info": {
+        "en": """
+    <b>Deposits:</b>
+    .....  
+    {text_deposit}
+    <b>Payouts:</b>
+    .....
+    {text_payout}
+    <b>Reinvestments:</b>
+    ......
+    {text_reinvestments}
+    <b>Commissions:</b>
+    .....
+    {text_commissions}
+
+            """,
+        "it": """
+    <b>Depositi:</b>
+    .....
+    {text_deposit}
+    <b>Pagamenti:</b>
+    .....
+    {text_payout}
+    <b>Reinvestimenti:</b>
+    ......
+    {text_reinvestments}
+    <b>Commissioni:</b>
+    .....
+    {text_commissions}
+
+            """
+    },
+
+
+    # Team
+
+
+    "invitation_link": {
+        "en": """
+Invitation link to share with your friends:
+https://t.me/{bot_name}?start={user_id}
+    """,
+        "it": """
+Link di invito da condividere con i Vostri amici:
+https://t.me/{bot_name}?start={user_id}
+    """
+    },
+
+    "referral_system_info": {
+        "en": """
+Refferal system:
+1. Level 5%
+2. Level 3%
+3. Level 1%
+
+Team:
+1. Level partner: 10
+2. Level partner:  5
+3. Level partner:  2
+
+Team volume:
+1. Level: 1.000000 BTC
+2. Level  0.557777 BTC
+3. Level  0.236675 BTC
+
+Total team earnings:
+xx.xxxxxx BTC
+        """,
+        "it": """
+Livelli Bonus:
+1. Livello 5%
+2. Livello 3%
+3. Livello 1%
+
+Team:
+1. Partner di livello: 10
+2. Partner di livello: 5
+3. Partner di livello: 2
+
+Totale della squadra:
+1. Livello: 1.000000 BTC
+2. Livello 0,557777 BTC
+3. Livello 0,236675 BTC
+
+Guadagno totale della squadra:
+xx.xxxxxx BTC
+        """
+    },
+
+
+    "commission_info": {
+        "en": """
+Your commissions will be added automatically to your main account balance each time a team member makes a deposit or a reinvestment.
+        """,
+        "it": """
+Le Vostre commissioni saranno aggiunte automaticamente al saldo del Vostro conto principale ogni volta che un membro del team effettua un deposito o un reinvestimento. 
+        """
+    }
+
+
+
+
+
 
 }

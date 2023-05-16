@@ -9,6 +9,9 @@ from .balances import balance
 from .supports import support
 from .deposits import deposit, promo
 from .reinvest import reinvest
+from .transactions import transaction
+from .teams import team
+from .callback_answer import callback_answer
 
 
 def register_handlers(bot):
@@ -78,6 +81,29 @@ def register_handlers(bot):
         func=lambda message: message.content_type == "text"
         and (
             bool(re.search(r'Reinvest$', message.text, re.IGNORECASE))
+        ),
+        admin=False, pass_bot=True
+    )
+
+    bot.register_callback_query_handler(
+        callback_answer, func=lambda call: True, pass_bot=True)
+
+    bot.register_message_handler(
+        transaction,
+        func=lambda message: message.content_type == "text"
+        and (
+            bool(re.search(r'Transactions', message.text, re.IGNORECASE))
+            or bool(re.search(r'Transazioni$', message.text, re.IGNORECASE))
+        ),
+        admin=False, pass_bot=True
+    )
+
+    bot.register_message_handler(
+        team,
+        func=lambda message: message.content_type == "text"
+        and (
+            bool(re.search(r'Team$', message.text, re.IGNORECASE))
+            or bool(re.search(r'Squadra$', message.text, re.IGNORECASE))
         ),
         admin=False, pass_bot=True
     )
