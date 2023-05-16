@@ -1,24 +1,26 @@
-from config import *
+from telebot import TeleBot
+from telebot.types import Message
+from tgbot import config
+from tgbot.utils.messages import messages
+from tgbot.utils.buttons import dashboard, confirm_order
+from tgbot.models import db
 
 
 def enter_address(message):
     chat_id = message.chat.id
     user_id = message.from_user.id
     message_id = message.message_id + 1
-    fcx_user = db.User.get_user(user_id)
+    fcx_user = db.get_user(user_id)
     balance = fcx_user.account_balance
     lang = fcx_user.language
     amount = message.text
     try:
         amount = Decimal(amount)
         if amount > balance:
-            insufficient_balance_text = {
-                "en": "You don't have enough funds to create a payout request",
-                "it": "Non puoi prelevare un valore superiore al saldo del tuo account"
-            }
+            insufficient_funds = messages["insufficient_funds"][lang]
             bot.send_message(
                 chat_id,
-                text=insufficient_balance_text[lang],
+                text=insufficient_funds,
                 parse_mode="html",
                 reply_markup=force_r
             )
@@ -28,13 +30,11 @@ def enter_address(message):
             )
         else:
             try:
-                set_wallet_address_text = {
-                    'en': "<b>Set your BTC wallet address</b>",
-                    'it': "<b>Imposta l'indirizzo del tuo portafoglio BTC</b>"
-                }
+                set_wallet_address_text = messages["set_wallet_address_text"][lang]
+
                 bot.send_message(
                     chat_id,
-                    text=set_wallet_address_text[lang],
+                    text=set_wallet_address_text,
                     parse_mode="html",
                     reply_markup=force_r
                 )
@@ -48,13 +48,11 @@ def enter_address(message):
                     chat_id, text="Invalid wallet address", parse_mode="html")
                 set_wallet_address(message)
     except (ValueError, InvalidOperation) as e:
-        invalid_amount = {
-            "en": "Invalid amount please insert number",
-            "it": "Importo non valido inserire il numero"
-        }
+        invalid_amount = messages["invalid_amount"][lang]
+   
         bot.send_message(
             chat_id,
-            text=invalid_amount[lang],
+            text=invalid_amount,
             parse_mode="html",
             reply_to_message_id=message.message_id,
             reply_markup=force_r
@@ -68,32 +66,25 @@ def enter_address(message):
 def withdrawal_confirmation(message, amount):
     chat_id = message.chat.id
     user_id = message.from_user.id
-    fcx_user = db.User.get_user(user_id)
+    fcx_user = db.get_user(user_id)
     balance = fcx_user.account_balance
     lang = fcx_user.language
     wallet_address = message.text
     regex_filter = '^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$'
     if re.match(regex_filter, wallet_address):
-        address_confirmation = {
-            "en": f"""
-    Withdrawal Amount: <b>{amount}</b>
-    Payment Address: <b>{wallet_address}</b>
-    """,
-            "it": f"""
-    Importo prelievo: <b>{amount}</b>
-    indirizzo di pagamento: <b>{wallet_address}</b>
-            """
-        }
+        withdraw_address_confirmation = messages["withdraw_address_confirmation"][lang].format(
+            amount=amount,
+            wallet_address=wallet_address
+        )
+
         bot.send_message(
-            chat_id, text=address_confirmation[lang], parse_mode="html", reply_markup=confirm_order[lang])
+            chat_id, text=withdraw_address_confirmation, parse_mode="html", reply_markup=confirm_order[lang])
     else:
-        text = {
-            "en": f"""Invalid address""",
-            "it": f"""Invalid address"""
-        }
+        invalid_address = messages["invalid_address"][lang]
+   
         bot.send_message(
             chat_id,
-            text=text[lang],
+            text=invalid_address,
             reply_markup=dashboard[lang],
             parse_mode="html"
         )
@@ -130,58 +121,34 @@ def withdrawal_confirmation(message, amount):
 #     bot.register_next_step_handler(message, withdrawal_confirmation)
 
 
-@bot.message_handler(
-    func=lambda message: message.content_type == 'text'
-    and (
-        bool(re.search(r'withdrawal$', message.text, re.IGNORECASE)) or
-        bool(re.search(r'Ritiro$', message.text, re.IGNORECASE))
-    )
-)
-def withdrawal(message):
+
+def withdrawal(message: Message, bot: TeleBot):
     chat_id = message.chat.id
     user_id = message.from_user.id
     message_id = message.message_id + 2
-    fcx_user = db.User.get_user(user_id)
+    fcx_user = db.get_user(user_id)
     balance = fcx_user.account_balance
     lang = fcx_user.language
-    WITHDRAWAL_MINIMUM_AMOUNT = 0.002
-    withdrawal_amount_text = {
-        "en": """<b>Enter the amount you wish to withdraw</b>""",
-        "it": """Enter the amount you wish to withdraw(italian"""
-    }
-    text_info = {
-        "en": f"""
-You can create a payout request any time, depending on your account balance.
-Minimum amount to withdraw is 0.002 BTC.
-        """,
-        "it": f"""
-E’ possibile fare una richiesta di pagamento in qualsiasi momento, a seconda del saldo del Vostro conto.
-L’importo minimo di prelievo è di 0,002 BTC.
-        """
-    }
-    text_insufficient = {
-        "en": """
-You don't have enough funds to create a payout request
-        """,
-        "it": """
-Non avete abbastanza fondi per creare una richiesta di pagamento.
-        """
-    }
+    withdrawal_minimum_amount = config.WITHDRAWAL_MINIMUM_AMOUNT
+    withdrawal_amount_text = messages["withdrawal_amount_text"][lang]
+    withdrawal_info = messages["withdrawal_info"][lang]
+    insufficient_funds = messages["insufficient_funds"][lang]
+    
     if balance < withdrawal_minimum_amount:
         bot.send_message(
-            chat_id, text=text_info[lang] + text_insufficient[lang],
+            chat_id, text=withdrawal_info + insufficient_funds,
             reply_markup=dashboard[lang], parse_mode="html"
         )
     else:
         bot.send_message(
             chat_id,  reply_to_message_id=message.message_id,
-            text=text_info[lang],
+            text=withdrawal_info,
             # reply_markup=force_r,
             parse_mode="html"
         )
         bot.send_message(
             chat_id,
-            text=withdrawal_amount_text[lang],
+            text=withdrawal_amount_text,
             parse_mode="html",
             reply_markup=force_r
         )
