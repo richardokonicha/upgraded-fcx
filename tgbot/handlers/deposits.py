@@ -20,9 +20,11 @@ def generate_address(message, **kwargs):
 
     balance = fcx_user.account_balance
     lang = fcx_user.language
+    fcx_markup_balances = messages["fcx_markup_balances"]
     
     try:
         amount = Decimal(message.text)
+
         dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang].format(account_balance=fcx_user.account_balance)
         # dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
         arrival_text = messages["arrival_text"][lang]
@@ -61,7 +63,7 @@ def generate_address(message, **kwargs):
             max_amount_text = messages["max_amount_text"][lang]
             bot.send_message(chat_id, text=max_amount_text, reply_markup=dashboard.get(lang))
     
-    except (ValueError, InvalidOperation):
+    except (ValueError):
         bot.send_message(chat_id, text="Invalid amount", reply_markup=dashboard.get(lang))
     except requests.exceptions.ProxyError as e:
         error_message = str(e)
@@ -101,7 +103,7 @@ def promo(message: Message, bot: TeleBot):
     fcx_user = db.get_user(user_id)
     balance = fcx_user.account_balance
     lang = fcx_user.language
-    # dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
+    fcx_markup_balances = messages["fcx_markup_balances"]
     dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang].format(account_balance=fcx_user.account_balance)
     promo = message.text.split(" ")[-1]
     try:
@@ -118,7 +120,6 @@ def promo(message: Message, bot: TeleBot):
         
         db.commit()
         
-        # dashboard[lang].keyboard[0][0] = f"Balances  {fcx_user.account_balance} BTC"
         dashboard[lang].keyboard[0][0] = fcx_markup_balances[lang].format(account_balance=fcx_user.account_balance)
         bot.send_message(
             chat_id,

@@ -303,11 +303,58 @@ Your commissions will be added automatically to your main account balance each t
         "it": """
 Le Vostre commissioni saranno aggiunte automaticamente al saldo del Vostro conto principale ogni volta che un membro del team effettua un deposito o un reinvestimento. 
         """
-    }
+    },
 
 
+    # Withdrawal
 
 
+    "withdrawal_amount_text": {
+        "en": """<b>Enter the amount you wish to withdraw</b>""",
+        "it": """Enter the amount you wish to withdraw(italian"""
+    },
 
+    "withdrawal_info": {
+        "en": f"""
+You can create a payout request any time, depending on your account balance.
+Minimum amount to withdraw is 0.002 BTC.
+        """,
+        "it": f"""
+E’ possibile fare una richiesta di pagamento in qualsiasi momento, a seconda del saldo del Vostro conto.
+L’importo minimo di prelievo è di 0,002 BTC.
+        """
+    },
+    "insufficient_funds": {
+        "en": """
+You don't have enough funds to create a payout request
+        """,
+        "it": """
+Non avete abbastanza fondi per creare una richiesta di pagamento.
+        """
+    },
 
+    "set_wallet_address_text": {
+        'en': "<b>Set your BTC wallet address</b>",
+        'it': "<b>Imposta l'indirizzo del tuo portafoglio BTC</b>"
+    },
+
+    "invalid_amount": {
+        "en": "Invalid amount please insert number",
+        "it": "Importo non valido inserire il numero"
+    },
+    "withdraw_address_confirmation": {
+        "en": """
+    Withdrawal Amount: <b>{amount}</b>
+    Payment Address: <b>{wallet_address}</b>
+    """,
+        "it": """
+    Importo prelievo: <b>{amount}</b>
+    indirizzo di pagamento: <b>{wallet_address}</b>
+            """
+    },
+
+    "invalid_address": {
+        "en": f"""Invalid address""",
+        "it": f"""Invalid address"""
+    },
 }
