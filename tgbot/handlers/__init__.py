@@ -12,6 +12,7 @@ from .reinvest import reinvest
 from .transactions import transaction
 from .teams import team
 from .callback_answer import callback_answer
+from .withdrawal import withdrawal
 
 
 def register_handlers(bot):
@@ -104,6 +105,16 @@ def register_handlers(bot):
         and (
             bool(re.search(r'Team$', message.text, re.IGNORECASE))
             or bool(re.search(r'Squadra$', message.text, re.IGNORECASE))
+        ),
+        admin=False, pass_bot=True
+    )
+
+    bot.register_message_handler(
+        withdrawal,
+        func=lambda message: message.content_type == "text"
+        and (
+            bool(re.search(r'withdrawal$', message.text, re.IGNORECASE)) or
+            bool(re.search(r'Ritiro$', message.text, re.IGNORECASE))
         ),
         admin=False, pass_bot=True
     )
